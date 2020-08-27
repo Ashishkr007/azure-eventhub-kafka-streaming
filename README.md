@@ -23,8 +23,40 @@ In this tutorial, we have given some sample program to connect EventHub from dat
   
 * [Configurations]
   * [Connection String](https://github.com/Azure/azure-event-hubs-spark/blob/master/docs/spark-streaming-eventhubs-integration.md#connection-string)
-  * [EventHubsConf](https://github.com/Azure/azure-event-hubs-spark/blob/master/docs/spark-streaming-eventhubs-integration.md#eventhubsconf)
+    
+    When you get the connection string from the Azure Portal, it may or may not have the EntityPath key. Consider:
 
+    ``` 
+    // Without an entity path
+    val without = "Endpoint=ENDPOINT;SharedAccessKeyName=KEY_NAME;SharedAccessKey=KEY"
+
+    // With an entity path 
+    val with = "Endpoint=sb://SAMPLE;SharedAccessKeyName=KEY_NAME;SharedAccessKey=KEY;EntityPath=EVENTHUB_NAME" 
+    ```
+    To connect to your EventHubs, an EntityPath must be present. If your connection string doesn't have one, don't worry! This will take care of it:
+
+    ``` 
+    import org.apache.spark.eventhubs.ConnectionStringBuilder
+
+    val connectionString = ConnectionStringBuilder(without)   // defined in the previous code block
+      .setEventHubName("EVENTHUB_NAME")
+      .build 
+      ```
+  * [EventHubsConf](https://github.com/Azure/azure-event-hubs-spark/blob/master/docs/spark-streaming-eventhubs-integration.md#eventhubsconf)
+  * EventPosition
+    
+    The EventHubsConf allows users to specify starting (and ending) positions with the EventPosition class. EventPosition defines a position of an event in an Event Hub partition. The position can be an enqueued time, offset, sequence number, the start of the stream, or the end of the stream.
+    ```
+    import org.apache.spark.eventhubs._
+
+    EventPosition.fromOffset("246812")          // Specifies offset 246812
+    EventPosition.fromSequenceNumber(100L)      // Specifies sequence number 100
+    EventPosition.fromEnqueuedTime(Instant.now) // Specifies any event after the current time 
+    EventPosition.fromStartOfStream             // Specifies from start of stream
+    EventPosition.fromEndOfStream               // Specifies from end of stream
+    ```
+    ![EventPosition](images/EventPosition.png "EventPosition")
+  
 ## Kafka Connector 
 ### [Producer](eventhub-producer-kafka-connector.scala)
 
