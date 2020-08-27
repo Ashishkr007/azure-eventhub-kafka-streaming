@@ -21,7 +21,7 @@ In this tutorial, we have given some sample program to connect EventHub from dat
   * [Create a library](https://docs.databricks.com/libraries/workspace-libraries.html#maven-libraries) in your Databricks workspace using the [Maven coordinate](https://mvnrepository.com/artifact/com.microsoft.azure/azure-eventhubs-spark) com.microsoft.azure:azure-eventhubs-spark_2.11:2.3.17.
   * [Install](https://docs.databricks.com/libraries/cluster-libraries.html#install-libraries) the created library into your cluster.
   
-* [Configurations]
+* Configurations
   * [Connection String](https://github.com/Azure/azure-event-hubs-spark/blob/master/docs/spark-streaming-eventhubs-integration.md#connection-string)
     
     When you get the connection string from the Azure Portal, it may or may not have the EntityPath key. Consider:
@@ -145,3 +145,6 @@ enqueuedTime | timestamp
 publisher | string
 partitionKey | string
 properties | map[string,json]
+
+### Kafka streaming Issues/FAQ
+https://github.com/Azure/azure-event-hubs-for-kafka
